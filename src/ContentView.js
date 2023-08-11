@@ -14,9 +14,16 @@ const ContentView = () => {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
 
+  // pega o arquivo html
   const [index, indexLoadingError] = useAssets(
     require("../assets/leaflet.html")
   );
+
+  if (index) {
+    readAsStringAsync(index[0].localUri).then((data) => {
+      setHtml(data);
+    });
+  }
 
   const handleBackPress = () => {
     webViewRef.current.goBack();
@@ -26,12 +33,7 @@ const ContentView = () => {
     webViewRef.current.goForward();
   };
 
-  if (index) {
-    readAsStringAsync(index[0].localUri).then((data) => {
-      setHtml(data);
-    });
-  }
-
+  // pega a localizacao
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -46,14 +48,25 @@ const ContentView = () => {
   }, []);
 
   let text = "Waiting..";
+  let usuarioLoc = "";
+  let mostrarMapa = false;
   if (errorMsg) {
     text = errorMsg;
   } else if (location) {
     text = JSON.stringify(location);
+
+    // script para enviar latitude e longitude para a pagina html
+    // usuarioLoc = `
+    //   window.latitude = ${location.latitude};
+    //   window.longitude =  ${location.longitude};
+    //   true;
+    // `;
+    // mostrarMapa = true;
   }
 
   return (
     <View style={styles.container}>
+      {/* {mostrarMapa && ( */}
       <WebView
         ref={webViewRef}
         source={{ html }}
@@ -64,14 +77,16 @@ const ContentView = () => {
           setCanGoBack(back);
           setCanGoFoward(forward);
         }}
+        injectedJavaScriptBeforeContentLoaded={usuarioLoc}
       />
+
       <Text>{text}</Text>
-      <NavigationView
+      {/* <NavigationView
         onBackPress={handleBackPress}
         onForwardPress={handleForwardPress}
         canGoBack={canGoBack}
         canGoForward={canGoForward}
-      />
+      /> */}
     </View>
   );
 };
