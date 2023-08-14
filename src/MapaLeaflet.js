@@ -2,7 +2,7 @@ import React from "react";
 import WebView from "react-native-webview";
 
 const MapaLeaflet = ({ latitude, longitude }) => {
-  const mapaLeaflet = `
+  const html = `
   <!DOCTYPE html>
   <html lang="en">
     <head>
@@ -47,11 +47,11 @@ const MapaLeaflet = ({ latitude, longitude }) => {
         id="map"
         style="width: 100%; height: 100%"></div>
       <script>
-        // const lat = 51.511948;
-        // const long = -0.088749;
+        const lat = -15.5729789;
+        const long = -56.0355887;
   
-        const lat = ${latitude}
-        const long = ${longitude}
+        // const lat = ${JSON.stringify(latitude)}
+        // const long = ${JSON.stringify(longitude)}
 
         var map = L.map("map").setView([lat, long], 13);
   
@@ -64,12 +64,12 @@ const MapaLeaflet = ({ latitude, longitude }) => {
           }
         ).addTo(map);
   
-        var marker = L.marker([lat + 0.5, long - 0.09])
+        var marker = L.marker([lat, long])
           .addTo(map)
           .bindPopup("<b>Hello world!</b><br />I am a popup.")
           .openPopup();
   
-        var circle = L.circle([lat + 0.508, long - 0.11], {
+        var circle = L.circle([lat, long], {
           color: "red",
           fillColor: "#f03",
           fillOpacity: 0.5,
@@ -79,15 +79,16 @@ const MapaLeaflet = ({ latitude, longitude }) => {
           .bindPopup("I am a circle.");
   
         var polygon = L.polygon([
-          [lat + 0.509, long - 0.08],
-          [lat + 0.503, long - 0.06],
-          [lat + 0.51, long - 0.047],
+          [lat + 0.02, long - 0.02],
+          [lat + 0.03, long ],
+          [lat + 0.01, long ],
+          [lat + 0.012, long - 0.01],
         ])
           .addTo(map)
           .bindPopup("I am a polygon.");
   
         var popup = L.popup()
-          .setLatLng([lat + 0.513, long - 0.09])
+          .setLatLng([lat, long])
           .setContent("I am a standalone popup.")
           .openOn(map);
   
@@ -104,12 +105,10 @@ const MapaLeaflet = ({ latitude, longitude }) => {
   </html>`;
 
   return (
-    <>
-      <WebView
-        source={{ mapaLeaflet }}
-        originWhitelist={["*"]}
-      />
-    </>
+    <WebView
+      source={{ html }}
+      originWhitelist={["*"]}
+    />
   );
 };
 

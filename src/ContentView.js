@@ -18,6 +18,7 @@ const ContentView = () => {
 
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
+      console.log(location.coords.latitude + "\n" + location.coords.longitude);
     })();
   }, []);
 
@@ -35,10 +36,9 @@ const ContentView = () => {
           latitude={location.coords.latitude}
           longitude={location.coords.longitude}
         />
-      ) : (
-        <Text></Text>
-      )}
-      <Text>{text}</Text>
+      ) : null}
+      <Text>Latitude: {location.coords.latitude}</Text>
+      <Text>Longitude: {location.coords.longitude}</Text>
     </View>
   );
 };
