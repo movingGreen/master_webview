@@ -6,6 +6,7 @@ import MapaLeaflet from "./MapaLeaflet";
 const ContentView = () => {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [mostrarMapa, setMostrarMapa] = useState(false);
 
   // pega a localizacao
   useEffect(() => {
@@ -19,26 +20,29 @@ const ContentView = () => {
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
       console.log(location.coords.latitude + "\n" + location.coords.longitude);
+      setMostrarMapa(true);
     })();
   }, []);
 
-  let text = "Waiting..";
+  let latitude = "Waiting..";
+  let longitude = "Waiting..";
   if (errorMsg) {
-    text = errorMsg;
+    latitude = errorMsg;
   } else if (location) {
-    text = JSON.stringify(location);
+    latitude = JSON.stringify(location.coords.latitude);
+    longitude = JSON.stringify(location.coords.longitude);
   }
 
   return (
     <View style={styles.container}>
-      {location ? (
+      {mostrarMapa && (
         <MapaLeaflet
           latitude={location.coords.latitude}
           longitude={location.coords.longitude}
         />
-      ) : null}
-      <Text>Latitude: {location.coords.latitude}</Text>
-      <Text>Longitude: {location.coords.longitude}</Text>
+      )}
+      <Text>Latitude: {latitude}</Text>
+      <Text>Longitude: {longitude}</Text>
     </View>
   );
 };
