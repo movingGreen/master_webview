@@ -47,11 +47,11 @@ const MapaLeaflet = ({ latitude, longitude }) => {
         id="map"
         style="width: 100%; height: 100%"></div>
       <script>
-        const lat = -15.5729789;
-        const long = -56.0355887;
+        // const lat = -15.5729789;
+        // const long = -56.0355887;
   
-        // const lat = ${JSON.stringify(latitude)}
-        // const long = ${JSON.stringify(longitude)}
+        const lat = ${JSON.stringify(latitude)}
+        const long = ${JSON.stringify(longitude)}
 
         var map = L.map("map").setView([lat, long], 13);
   

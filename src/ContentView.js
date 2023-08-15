@@ -7,6 +7,8 @@ const ContentView = () => {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [mostrarMapa, setMostrarMapa] = useState(false);
+  const [textLatitude, SetTextLatitude] = useState("Waiting..");
+  const [textLongitude, SetTextLongitude] = useState("Waiting..");
 
   // pega a localizacao
   useEffect(() => {
@@ -21,17 +23,15 @@ const ContentView = () => {
       setLocation(location);
       console.log(location.coords.latitude + "\n" + location.coords.longitude);
       setMostrarMapa(true);
+
+      if (errorMsg) {
+        latitude = errorMsg;
+      } else if (location) {
+        SetTextLatitude(JSON.stringify(location.coords.latitude));
+        SetTextLongitude(JSON.stringify(location.coords.longitude));
+      }
     })();
   }, []);
-
-  let latitude = "Waiting..";
-  let longitude = "Waiting..";
-  if (errorMsg) {
-    latitude = errorMsg;
-  } else if (location) {
-    latitude = JSON.stringify(location.coords.latitude);
-    longitude = JSON.stringify(location.coords.longitude);
-  }
 
   return (
     <View style={styles.container}>
@@ -41,8 +41,8 @@ const ContentView = () => {
           longitude={location.coords.longitude}
         />
       )}
-      <Text>Latitude: {latitude}</Text>
-      <Text>Longitude: {longitude}</Text>
+      <Text>Latitude: {textLatitude}</Text>
+      <Text>Longitude: {textLongitude}</Text>
     </View>
   );
 };
