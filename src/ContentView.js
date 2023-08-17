@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import * as Location from "expo-location";
 import MapaLeaflet from "./MapaLeaflet";
+import { StatusBar } from "expo-status-bar";
 
 const ContentView = () => {
   const [location, setLocation] = useState(null);
@@ -35,6 +36,7 @@ const ContentView = () => {
 
   return (
     <View style={styles.container}>
+      <StatusBar hidden />
       {mostrarMapa && (
         <MapaLeaflet
           latitude={location.coords.latitude}
