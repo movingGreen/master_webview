@@ -36,7 +36,11 @@ const ContentView = () => {
 
   return (
     <View style={styles.container}>
-      <StatusBar hidden />
+      <StatusBar
+        style="light"
+        backgroundColor="transparent"
+        translucent
+      />
       {mostrarMapa && (
         <MapaLeaflet
           latitude={location.coords.latitude}
