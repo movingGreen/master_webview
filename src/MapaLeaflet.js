@@ -104,8 +104,6 @@ const MapaLeaflet = ({ latitude, longitude }) => {
     </body>
   </html>`;
 
-  const 
-
   return (
     <WebView
       source={{ html }}
