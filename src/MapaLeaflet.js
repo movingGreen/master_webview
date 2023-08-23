@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useRef } from "react";
+import { Text } from "react-native";
 import WebView from "react-native-webview";
 
 const MapaLeaflet = ({ latitude, longitude }) => {
@@ -105,12 +106,16 @@ const MapaLeaflet = ({ latitude, longitude }) => {
   </html>`;
 
   return (
-    <WebView
-      source={{ html }}
-      originWhitelist={["*"]}
-      ref={(r) => (webRef = r)}
-      onMessage={(event) => {}}
-    />
+    <>
+      <WebView
+        source={{ html }}
+        originWhitelist={["*"]}
+        ref={(r) => (webRef = r)}
+        onMessage={(event) => {}}
+      />
+      <Text>Latitude: {latitude}</Text>
+      <Text>Longitude: {longitude}</Text>
+    </>
   );
 };
 

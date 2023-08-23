@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, createContext } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import * as Location from "expo-location";
 import MapaLeaflet from "./MapaLeaflet";
@@ -10,11 +10,14 @@ const ContentView = () => {
   const [mostrarMapa, setMostrarMapa] = useState(false);
   const [textLatitude, SetTextLatitude] = useState("Waiting..");
   const [textLongitude, SetTextLongitude] = useState("Waiting..");
+  const [status, setStatus] = useState("");
+  const webviewContext = createContext();
 
   const getPermissionELocation = async () => {
     let locationData,
       errorMessage = "";
     let { status } = await Location.requestForegroundPermissionsAsync();
+    setStatus(status);
 
     if (status !== "granted") {
       errorMessage = "Permission to access location was denied";
@@ -55,9 +58,7 @@ const ContentView = () => {
           longitude={location.coords.longitude}
         />
       )}
-      <Text>Latitude: {textLatitude}</Text>
-      <Text>Longitude: {textLongitude}</Text>
-      <Text>Permissão loc: </Text>
+      <Text>Permissão loc: {status}</Text>
     </View>
   );
 };
@@ -67,6 +68,6 @@ export default ContentView;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 20,
+    marginTop: 10,
   },
 });
