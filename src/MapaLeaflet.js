@@ -104,10 +104,14 @@ const MapaLeaflet = ({ latitude, longitude }) => {
     </body>
   </html>`;
 
+  const 
+
   return (
     <WebView
       source={{ html }}
       originWhitelist={["*"]}
+      ref={(r) => (webRef = r)}
+      onMessage={(event) => {}}
     />
   );
 };
