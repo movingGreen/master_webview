@@ -1,8 +1,12 @@
-import React, { useRef } from "react";
-import { Text } from "react-native";
+import React, { useRef, useState } from "react";
+import { Button, Text } from "react-native";
 import WebView from "react-native-webview";
+import * as Location from "expo-location";
 
 const MapaLeaflet = ({ latitude, longitude }) => {
+  const [latitudeState, setLatitudeState] = useState(latitude);
+  const [longitudeState, setLongitudeState] = useState(longitude);
+
   const html = `
   <!DOCTYPE html>
   <html lang="en">
@@ -51,10 +55,10 @@ const MapaLeaflet = ({ latitude, longitude }) => {
         // const lat = -15.5729789;
         // const long = -56.0355887;
   
-        const lat = ${JSON.stringify(latitude)}
-        const long = ${JSON.stringify(longitude)}
+        const lat = ${JSON.stringify(latitudeState)}
+        const long = ${JSON.stringify(longitudeState)}
 
-        var map = L.map("map").setView([lat, long], 13);
+        var map = L.map("map").setView([lat, long], 17);
   
         var tiles = L.tileLayer(
           "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
@@ -70,7 +74,7 @@ const MapaLeaflet = ({ latitude, longitude }) => {
           .bindPopup("<b>Hello world!</b><br />I am a popup.")
           .openPopup();
   
-        var circle = L.circle([lat, long], {
+        var circle = L.circle([lat + 0.04, long ], {
           color: "red",
           fillColor: "#f03",
           fillOpacity: 0.5,
@@ -105,6 +109,14 @@ const MapaLeaflet = ({ latitude, longitude }) => {
     </body>
   </html>`;
 
+  setInterval(async () => {
+    locationData = await Location.getCurrentPositionAsync({});
+
+    setLatitudeState(locationData.coords.latitude);
+    setLongitudeState(locationData.coords.longitude);
+    console.log(locationData.coords.latitude);
+  }, 3000);
+
   return (
     <>
       <WebView
@@ -113,8 +125,11 @@ const MapaLeaflet = ({ latitude, longitude }) => {
         ref={(r) => (webRef = r)}
         onMessage={(event) => {}}
       />
-      <Text>Latitude: {latitude}</Text>
-      <Text>Longitude: {longitude}</Text>
+      <Button
+        title="setar loc"
+        onPress={() => {}}></Button>
+      <Text>Latitude: {latitudeState}</Text>
+      <Text>Longitude: {longitudeState}</Text>
     </>
   );
 };

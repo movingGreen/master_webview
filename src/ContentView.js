@@ -8,8 +8,6 @@ const ContentView = () => {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [mostrarMapa, setMostrarMapa] = useState(false);
-  const [textLatitude, SetTextLatitude] = useState("Waiting..");
-  const [textLongitude, SetTextLongitude] = useState("Waiting..");
   const [status, setStatus] = useState("");
   const webviewContext = createContext();
 
@@ -38,8 +36,6 @@ const ContentView = () => {
       if (errorMsg) {
         latitude = errorMsg;
       } else if (location) {
-        SetTextLatitude(JSON.stringify(location.coords.latitude));
-        SetTextLongitude(JSON.stringify(location.coords.longitude));
         setMostrarMapa(true);
       }
     })();
@@ -68,6 +64,6 @@ export default ContentView;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 10,
+    marginTop: 25,
   },
 });
