@@ -1,11 +1,15 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button, Text } from "react-native";
 import WebView from "react-native-webview";
-import * as Location from "expo-location";
+import { AppContext } from "./AppContext";
 
 const MapaLeaflet = ({ latitude, longitude }) => {
-  const [latitudeState, setLatitudeState] = useState(latitude);
-  const [longitudeState, setLongitudeState] = useState(longitude);
+  const { latitudeState, longitudeState, mostraMapa } = useContext(AppContext);
+
+  const [latitudeStateWebview, setLatitudeStateWebview] = useState(latitude);
+  const [longitudeStateWebview, setLongitudeStateWebview] = useState(longitude);
+
+  let webRef;
 
   const html = `
   <!DOCTYPE html>
@@ -55,8 +59,8 @@ const MapaLeaflet = ({ latitude, longitude }) => {
         // const lat = -15.5729789;
         // const long = -56.0355887;
   
-        const lat = ${JSON.stringify(latitudeState)}
-        const long = ${JSON.stringify(longitudeState)}
+        const lat = ${JSON.stringify(latitudeStateWebview)}
+        const long = ${JSON.stringify(longitudeStateWebview)}
 
         var map = L.map("map").setView([lat, long], 17);
   
@@ -109,13 +113,17 @@ const MapaLeaflet = ({ latitude, longitude }) => {
     </body>
   </html>`;
 
-  setInterval(async () => {
-    locationData = await Location.getCurrentPositionAsync({});
+  useEffect(() => {
+    setLatitudeStateWebview(latitudeState);
+    setLongitudeStateWebview(longitudeState);
+    console.log(
+      `\nWebview lat e long = ${latitudeStateWebview} - ${longitudeStateWebview}`
+    );
+  }, [latitudeState, longitudeState]);
 
-    setLatitudeState(locationData.coords.latitude);
-    setLongitudeState(locationData.coords.longitude);
-    console.log(locationData.coords.latitude);
-  }, 3000);
+  useEffect(() => {
+    webRef.reload();
+  }, [mostraMapa]);
 
   return (
     <>
@@ -125,11 +133,8 @@ const MapaLeaflet = ({ latitude, longitude }) => {
         ref={(r) => (webRef = r)}
         onMessage={(event) => {}}
       />
-      <Button
-        title="setar loc"
-        onPress={() => {}}></Button>
-      <Text>Latitude: {latitudeState}</Text>
-      <Text>Longitude: {longitudeState}</Text>
+      <Text>Latitude: {latitudeStateWebview}</Text>
+      <Text>Longitude: {longitudeStateWebview}</Text>
     </>
   );
 };

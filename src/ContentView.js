@@ -1,15 +1,17 @@
 import React, { useState, useRef, useEffect, createContext } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Button, StyleSheet, Text, View } from "react-native";
 import * as Location from "expo-location";
 import MapaLeaflet from "./MapaLeaflet";
 import { StatusBar } from "expo-status-bar";
+import { AppContext } from "./AppContext";
 
 const ContentView = () => {
   const [location, setLocation] = useState(null);
+  const [latitudeState, setLatitudeState] = useState(null);
+  const [longitudeState, setLongitudeState] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [mostrarMapa, setMostrarMapa] = useState(false);
   const [status, setStatus] = useState("");
-  const webviewContext = createContext();
 
   const getPermissionELocation = async () => {
     let locationData,
@@ -31,6 +33,8 @@ const ContentView = () => {
     (async () => {
       const [locationData, errorMessage] = await getPermissionELocation();
       setLocation(locationData);
+      setLatitudeState(locationData.coords.latitude);
+      setLongitudeState(locationData.coords.longitude);
       setErrorMsg(errorMessage);
 
       if (errorMsg) {
@@ -43,18 +47,28 @@ const ContentView = () => {
 
   return (
     <View style={styles.container}>
-      <StatusBar
-        style="light"
-        backgroundColor="transparent"
-        translucent
-      />
-      {mostrarMapa && (
-        <MapaLeaflet
-          latitude={location.coords.latitude}
-          longitude={location.coords.longitude}
+      <AppContext.Provider
+        value={{ latitudeState, longitudeState, mostrarMapa }}>
+        <StatusBar
+          style="light"
+          backgroundColor="transparent"
+          translucent
         />
-      )}
-      <Text>Permissão loc: {status}</Text>
+        {mostrarMapa ? (
+          <MapaLeaflet
+            latitude={latitudeState}
+            longitude={longitudeState}
+          />
+        ) : null}
+        <Text>Permissão de localizacao: {status}</Text>
+        <Button
+          title="setar localizacao"
+          onPress={() => {
+            setLatitudeState(Math.random() * 30);
+            setLongitudeState(Math.random() * 30);
+          }}
+        />
+      </AppContext.Provider>
     </View>
   );
 };
@@ -64,6 +78,6 @@ export default ContentView;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 25,
+    marginTop: 26,
   },
 });
