@@ -68,6 +68,10 @@ const ContentView = () => {
             setLongitudeState(Math.random() * 30);
           }}
         />
+        <Button
+          title="mostrar mapa"
+          onPress={() => setMostrarMapa(true)}
+        />
       </AppContext.Provider>
     </View>
   );
