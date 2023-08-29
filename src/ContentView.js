@@ -62,7 +62,7 @@ const ContentView = () => {
         ) : null}
         <Text>Permissão de localizacao: {status}</Text>
         <Button
-          title="setar localizacao"
+          title="Localizacao aleatoria"
           onPress={() => {
             setLatitudeState(Math.random() * 30);
             setLongitudeState(Math.random() * 30);
