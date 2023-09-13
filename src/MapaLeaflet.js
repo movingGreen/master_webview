@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { Button, Text } from "react-native";
 import WebView from "react-native-webview";
 import { AppContext } from "./AppContext";
-import L from "./LeafletCode";
 
 const MapaLeaflet = ({ latitude, longitude }) => {
   const { latitudeState, longitudeState, mostraMapa } = useContext(AppContext);
@@ -11,12 +10,17 @@ const MapaLeaflet = ({ latitude, longitude }) => {
   const [longitudeStateWebview, setLongitudeStateWebview] = useState(longitude);
 
   let webRef;
-  let marker = ({}) => {
+
+  const marker = (lat, long, texto) => {
+    let textoMarker = texto && `<b>Hello world!</b><br />I am a popup.`;
+
     return `
-      var marker = L.marker([lat, long])
+      
+      var marker = L.marker([${lat}, ${long}])
       .addTo(map)
-      .bindPopup("<b>Hello world!</b><br />I am a popup.")
+      .bindPopup(${textoMarker})
       .openPopup();
+
     `;
   };
 
@@ -73,7 +77,11 @@ const MapaLeaflet = ({ latitude, longitude }) => {
             }
             ).addTo(map);
             
-            ${marker}
+            ${marker(
+              latitudeStateWebview,
+              longitudeStateWebview,
+              "Sou um marker pela funcao"
+            )}
             
             var circle = L.circle([lat + 0.04, long ], {
               color: "red",
@@ -113,6 +121,7 @@ const MapaLeaflet = ({ latitude, longitude }) => {
           </script>
           </body>
     </html>`;
+
   useEffect(() => {
     setLatitudeStateWebview(latitudeState);
     setLongitudeStateWebview(longitudeState);
