@@ -56,8 +56,8 @@ const ContentView = () => {
         />
         {mostrarMapa ? (
           <MapaLeaflet
-            latitude={latitudeState}
-            longitude={longitudeState}
+            latitude={" "}
+            longitude={" "}
           />
         ) : null}
         <Text>Permissão de localizacao: {status}</Text>
@@ -71,6 +71,13 @@ const ContentView = () => {
         <Button
           title="mostrar mapa"
           onPress={() => setMostrarMapa(true)}
+        />
+        <Button
+          title="setar latitude e long vazio"
+          onPress={() => {
+            setLatitudeState(" ");
+            setLongitudeState(" ");
+          }}
         />
       </AppContext.Provider>
     </View>
