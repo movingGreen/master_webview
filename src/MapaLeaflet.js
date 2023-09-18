@@ -3,6 +3,19 @@ import { Button, Text } from "react-native";
 import WebView from "react-native-webview";
 import { AppContext } from "./AppContext";
 
+function marker(lat, long, texto) {
+  let textoMarker = texto && `<b>Hello world!</b><br />I am a popup.`;
+
+  return `
+    
+    var marker = L.marker([${lat}, ${long}])
+    .addTo(map)
+    .bindPopup(${textoMarker})
+    .openPopup();
+
+  `;
+}
+
 const MapaLeaflet = ({ latitude, longitude }) => {
   const { latitudeState, longitudeState, mostraMapa } = useContext(AppContext);
 
@@ -11,33 +24,24 @@ const MapaLeaflet = ({ latitude, longitude }) => {
 
   let webRef;
 
-  const marker = (lat, long, texto) => {
-    let textoMarker = texto && `<b>Hello world!</b><br />I am a popup.`;
-
-    return `
-      
-      var marker = L.marker([${lat}, ${long}])
-      .addTo(map)
-      .bindPopup(${textoMarker})
-      .openPopup();
-
-    `;
-  };
-
   const html = `
     <!DOCTYPE html>
     <html lang="en">
       <head>
         <meta charset="utf-8" />
-        <meta
-          name="viewport"  
-          content="width=device-width, initial-scale=1" />
+        <meta 
+          name="viewport" 
+          content="width=device-width, 
+            initial-scale=1.0, 
+            maximum-scale=1.0, 
+            user-scalable=no"/>
     
         <link
           rel="stylesheet"
           href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
           integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
           crossorigin="" />
+
         <script
           src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
           integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
@@ -63,15 +67,34 @@ const MapaLeaflet = ({ latitude, longitude }) => {
           style="width: 100%; height: 100%">
         </div>
         <script>            
+
+            var myLines = [{
+              "type": "LineString",
+              "coordinates": [[-100, 40], [-105, 45], [-110, 55]]
+            }, {
+              "type": "LineString",
+              "coordinates": [[-105, 40], [-105, 45], [-115, 55]]
+            }]
+
+            var myStyle = {
+              "color": "#ff7800",
+              "weight": 5,
+              "opacity": 0.65
+            };
+
             const lat = ${latitudeStateWebview}
             const long = ${longitudeStateWebview}
             
-            var map = L.map("map").setView([lat, long], 18);
+            map = L.map("map").setView([lat, long], 19);
+
+            L.geoJSON(myLines, {
+              style: myStyle
+            }).addTo(map);
             
             var tiles = L.tileLayer(
             "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
             {
-              maxZoom: 19,
+              maxZoom: 20,
               attribution:
               '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
             }
@@ -95,10 +118,6 @@ const MapaLeaflet = ({ latitude, longitude }) => {
               .addTo(map)
               .bindPopup("I am a polygon.");
 
-            var popup = L.popup()
-              .setLatLng([lat, long])
-              .setContent("I am a standalone popup.")
-              .openOn(map);
 
             function onMapClick(e) {
               popup
