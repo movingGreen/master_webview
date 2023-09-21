@@ -87,9 +87,9 @@ const MapaLeaflet = ({ latitude, longitude }) => {
             
             map = L.map("map").setView([lat, long], 19);
 
-            L.geoJSON(myLines, {
-              style: myStyle
-            }).addTo(map);
+            // L.geoJSON(myLines, {
+            //   style: myStyle
+            // }).addTo(map);
             
             var tiles = L.tileLayer(
             "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
@@ -118,6 +118,9 @@ const MapaLeaflet = ({ latitude, longitude }) => {
               .addTo(map)
               .bindPopup("I am a polygon.");
 
+            L.marker([lat, long]).addTo(map);
+
+            marker.bindPopup(popupContent).openPopup();
 
             function onMapClick(e) {
               popup
@@ -125,6 +128,10 @@ const MapaLeaflet = ({ latitude, longitude }) => {
               .setContent("You clicked the map at " + e.latlng.toString())
               .openOn(map);
             }  
+
+            function onLocationError(e) {
+              alert(e.message);
+            }
 
             map.on("click", onMapClick);
           </script>
