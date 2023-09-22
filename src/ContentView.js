@@ -42,24 +42,24 @@ const ContentView = () => {
         setMostrarMapa(true);
       }
     })();
+  }, []);
 
+  useEffect(() => {
     const ultimaLoc = setInterval(async () => {
       try {
         locationData = await Location.getLastKnownPositionAsync();
         setLocation(locationData);
         setLatitudeState(locationData.coords.latitude);
         setLongitudeState(locationData.coords.longitude);
+
+        console.log(latitudeState + " === " + longitudeState + "\n");
       } catch (error) {
         console.error("Erro ao pegar a localizacao: ", error);
       }
-    }, 5000);
+    }, 10000);
 
     return () => clearInterval(ultimaLoc);
   }, []);
-
-  useEffect(() => {
-    console.log(latitudeState + " === " + longitudeState + "\n");
-  }, [latitudeState, longitudeState]);
 
   return (
     <View style={styles.container}>
