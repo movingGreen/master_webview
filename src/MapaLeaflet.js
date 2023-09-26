@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Button, Text } from "react-native";
 import WebView from "react-native-webview";
 import { AppContext } from "./AppContext";
+import { Asset } from "expo-asset";
 
 function marker(lat, long, texto) {
   let textoMarker = texto && `<b>Hello world!</b><br />I am a popup.`;
@@ -86,10 +87,33 @@ const MapaLeaflet = ({ latitude, longitude }) => {
             const long = ${longitudeStateWebview}
             
             map = L.map("map").setView([lat, long], 19);
+            // var map = new L.Map('map', {
+            //   'center': [lat, long],
+            //   'zoom': 19
+            // })
 
             // L.geoJSON(myLines, {
             //   style: myStyle
             // }).addTo(map);
+
+            // jQuery ajax request
+            // $.ajax({
+            //   // url with your geojson data file
+            //   'url': 'https://servicodados.ibge.gov.br/api/v3/malhas/paises/BR',
+
+            //   // return json object, not as string
+            //   'dataType': 'json',
+
+            //   // on success handle result
+            //   'success': function (result) {
+
+            //     // Initialize GeoJSON layer and add to map
+            //     var layer = new L.GeoJSON(result).addTo(map);
+
+            //     // Fit map to bounds of your GeoJSON
+            //     map.fitBounds(layer.getBounds());
+            //   }
+            // });
             
             var tiles = L.tileLayer(
             "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
@@ -97,41 +121,42 @@ const MapaLeaflet = ({ latitude, longitude }) => {
               maxZoom: 20,
               attribution:
               '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+              continuosWorld:
             }
             ).addTo(map);
 
-            var circle = L.circle([lat + 0.04, long ], {
-              color: "red",
-              fillColor: "#f03",
-              fillOpacity: 0.5,
-              radius: 500,
-            })
-              .addTo(map)
-              .bindPopup("I am a circle.");
+            // var circle = L.circle([lat + 0.04, long ], {
+            //   color: "red",
+            //   fillColor: "#f03",
+            //   fillOpacity: 0.5,
+            //   radius: 500,
+            // })
+            //   .addTo(map)
+            //   .bindPopup("I am a circle.");
             
-            var polygon = L.polygon([
-              [lat + 0.02, long - 0.02],
-              [lat + 0.03, long ],
-              [lat + 0.01, long ],
-              [lat + 0.012, long - 0.01],
-            ])
-              .addTo(map)
-              .bindPopup("I am a polygon.");
+            // var polygon = L.polygon([
+            //   [lat + 0.02, long - 0.02],
+            //   [lat + 0.03, long ],
+            //   [lat + 0.01, long ],
+            //   [lat + 0.012, long - 0.01],
+            // ])
+            //   .addTo(map)
+            //   .bindPopup("I am a polygon.");
 
-            L.marker([lat, long]).addTo(map);
+            // L.marker([lat, long]).addTo(map);
 
-            marker.bindPopup(popupContent).openPopup();
+            // marker.bindPopup(popupContent).openPopup();
 
-            function onMapClick(e) {
-              popup
-              .setLatLng(e.latlng)
-              .setContent("You clicked the map at " + e.latlng.toString())
-              .openOn(map);
-            }  
+            // function onMapClick(e) {
+            //   popup
+            //   .setLatLng(e.latlng)
+            //   .setContent("You clicked the map at " + e.latlng.toString())
+            //   .openOn(map);
+            // }  
 
-            function onLocationError(e) {
-              alert(e.message);
-            }
+            // function onLocationError(e) {
+            //   alert(e.message);
+            // }
 
             map.on("click", onMapClick);
           </script>

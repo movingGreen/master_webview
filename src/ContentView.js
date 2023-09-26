@@ -47,7 +47,8 @@ const ContentView = () => {
   useEffect(() => {
     const ultimaLoc = setInterval(async () => {
       try {
-        locationData = await Location.getLastKnownPositionAsync();
+        // locationData = await Location.getLastKnownPositionAsync();
+        locationData = await Location.getCurrentPositionAsync();
         setLocation(locationData);
         setLatitudeState(locationData.coords.latitude);
         setLongitudeState(locationData.coords.longitude);
@@ -70,12 +71,12 @@ const ContentView = () => {
           backgroundColor="transparent"
           translucent
         />
-        {mostrarMapa ? (
-          <MapaLeaflet
-            latitude={" "}
-            longitude={" "}
-          />
-        ) : null}
+        {/* {mostrarMapa ? ( */}
+        <MapaLeaflet
+          latitude={" "}
+          longitude={" "}
+        />
+        {/* // ) : null} */}
         <Text>Permissão de localizacao: {status}</Text>
         <Button
           title="Localizacao aleatoria"
