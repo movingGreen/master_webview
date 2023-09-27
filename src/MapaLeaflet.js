@@ -87,43 +87,31 @@ const MapaLeaflet = ({ latitude, longitude }) => {
             const long = ${longitudeStateWebview}
             
             map = L.map("map").setView([lat, long], 19);
-            // var map = new L.Map('map', {
-            //   'center': [lat, long],
-            //   'zoom': 19
-            // })
+            var map = new L.Map('map', {
+              'center': [lat, long],
+              'zoom': 19
+            })
 
-            // L.geoJSON(myLines, {
-            //   style: myStyle
-            // }).addTo(map);
+            L.geoJSON(myLines, {
+              style: myStyle
+            }).addTo(map);
 
             // jQuery ajax request
-            // $.ajax({
-            //   // url with your geojson data file
-            //   'url': 'https://servicodados.ibge.gov.br/api/v3/malhas/paises/BR',
+            $.ajax({
+              url with your geojson data file
+              'url': 'https://servicodados.ibge.gov.br/api/v3/malhas/paises/BR',
 
-            //   // return json object, not as string
-            //   'dataType': 'json',
+              return json object, not as string
+              'dataType': 'json',
 
-            //   // on success handle result
-            //   'success': function (result) {
+              on success handle result
+              'success': function (result) {
 
-            //     // Initialize GeoJSON layer and add to map
-            //     var layer = new L.GeoJSON(result).addTo(map);
+                var layer = new L.GeoJSON(result).addTo(map);
+                map.fitBounds(layer.getBounds());
+              }
+            });
 
-            //     // Fit map to bounds of your GeoJSON
-            //     map.fitBounds(layer.getBounds());
-            //   }
-            // });
-            
-            var tiles = L.tileLayer(
-            "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-            {
-              maxZoom: 20,
-              attribution:
-              '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-              continuosWorld:
-            }
-            ).addTo(map);
 
             // var circle = L.circle([lat + 0.04, long ], {
             //   color: "red",
