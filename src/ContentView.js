@@ -73,8 +73,8 @@ const ContentView = () => {
         />
         {/* {mostrarMapa ? ( */}
         <MapaLeaflet
-          latitude={" "}
-          longitude={" "}
+          latitude={latitudeState}
+          longitude={longitudeState}
         />
         {/* // ) : null} */}
         <Text>Permissão de localizacao: {status}</Text>
