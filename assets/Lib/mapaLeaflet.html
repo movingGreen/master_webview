@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, 
+        initial-scale=1.0, 
+        maximum-scale=1.0, 
+        user-scalable=no" />
+
+    <link
+      rel="stylesheet"
+      href="./leaflet/leaflet.css" />
+
+    <script src="./leaflet/leaflet.js"></script>
+
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>abcd</h1>
+    <button onClick="PrintTeste()">teste button</button>
+    <div
+      id="map"
+      style="width: 90%; height: 87%"></div>
+    <script type="text/javascript">
+      const PrintTeste = async () => {
+        window.ReactNativeWebView.postMessage("Dados do webview");
+      };
+
+      const lat = -15.573;
+      const long = -56.0356063;
+
+      const map = L.map("map").setView([lat, long], 19);
+
+      const tiles = L.tileLayer("").addTo(map);
+
+      L.marker([lat, long]).addTo(map);
+
+      L.circle([lat + 0.04, long], {
+        color: "red",
+        fillColor: "#f03",
+        fillOpacity: 0.5,
+        radius: 500,
+      })
+        .addTo(map)
+        .bindPopup("Circle");
+    </script>
+  </body>
+</html>
+`;

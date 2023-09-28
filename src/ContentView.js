@@ -44,23 +44,22 @@ const ContentView = () => {
     })();
   }, []);
 
-  useEffect(() => {
-    const ultimaLoc = setInterval(async () => {
-      try {
-        // locationData = await Location.getLastKnownPositionAsync();
-        locationData = await Location.getCurrentPositionAsync();
-        setLocation(locationData);
-        setLatitudeState(locationData.coords.latitude);
-        setLongitudeState(locationData.coords.longitude);
+  // useEffect(() => {
+  //   const ultimaLoc = setInterval(async () => {
+  //     try {
+  //       locationData = await Location.getCurrentPositionAsync();
+  //       setLocation(locationData);
+  //       setLatitudeState(locationData.coords.latitude);
+  //       setLongitudeState(locationData.coords.longitude);
 
-        console.log(latitudeState + " === " + longitudeState + "\n");
-      } catch (error) {
-        console.error("Erro ao pegar a localizacao: ", error);
-      }
-    }, 10000);
+  //       console.log(latitudeState + " === " + longitudeState + "\n");
+  //     } catch (error) {
+  //       console.error("Erro ao pegar a localizacao: ", error);
+  //     }
+  //   }, 10000);
 
-    return () => clearInterval(ultimaLoc);
-  }, []);
+  //   return () => clearInterval(ultimaLoc);
+  // }, []);
 
   return (
     <View style={styles.container}>
@@ -71,29 +70,16 @@ const ContentView = () => {
           backgroundColor="transparent"
           translucent
         />
-        {/* {mostrarMapa ? ( */}
         <MapaLeaflet
           latitude={latitudeState}
           longitude={longitudeState}
         />
-        {/* // ) : null} */}
         <Text>Permissão de localizacao: {status}</Text>
         <Button
           title="Localizacao aleatoria"
           onPress={() => {
             setLatitudeState(Math.random() * 30);
             setLongitudeState(Math.random() * 30);
-          }}
-        />
-        <Button
-          title="mostrar mapa"
-          onPress={() => setMostrarMapa(true)}
-        />
-        <Button
-          title="setar latitude e long vazio"
-          onPress={() => {
-            setLatitudeState(" ");
-            setLongitudeState(" ");
           }}
         />
       </AppContext.Provider>
